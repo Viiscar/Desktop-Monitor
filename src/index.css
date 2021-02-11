@@ -15,17 +15,17 @@ html {
   align-items: center;
   color: white;
 } */
-.box {
+.machine {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 100px;
-  line-height: 0.95;
-  padding: 0 30px 0 30px;
+  justify-content: space-around;
 }
-.label {
-  font-size: 20px;
-  font-weight: 600;
-  color:#efa;
+.cpu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.ram {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }

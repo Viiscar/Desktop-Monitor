@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div>
-      <h1>OS</h1>
+    <div class="machine">
       <div>
         <span id="pcBrand"></span>
         <span id="pcModel"></span>
@@ -18,9 +17,10 @@
       </div>
     </div>
     <div>
-      <div>
-        <h1>CPU</h1>
+      <h1>CPU</h1>
+      <div class="cpu">
         <div>
+          <h3>Model</h3>
           <span id="cpuBrand"></span>
           <h3>Cores</h3>
           <span id="cpuCores"></span>
@@ -45,25 +45,22 @@
         </div>
       </div>
     </div>
-    <div>
-      <h1>RAM</h1>
+    <h1>RAM</h1>
+    <div class="ram">
       <h3>Total Ram</h3>
       <span id="totalRam"></span>
       <h3>Used Ram</h3>
       <span id="usedRam"></span>
     </div>
-    <!-- <div class="box">
-      <span class="label">CPU (%)</span>
-      <span id="cpuLoad">-</span>
+    <h1>Battery</h1>
+    <div class="ram">
+      <h3>Type</h3>
+      <span id="batteryType"></span>
+      <h3>Model</h3>
+      <span id="batteryModel"></span>
+      <h3>Cycles</h3>
+      <span id="batterryCycles"></span>
     </div>
-    <div class="box">
-      <span class="label">Used RAM (GB)</span>
-      <span id="usedRam">-</span>
-    </div>
-    <div class="box">
-      <span class="label">Total RAM (GB)</span>
-      <span id="totalRam">-</span>
-    </div> -->
   </body>
   <script src="index.js"></script>
 </html>

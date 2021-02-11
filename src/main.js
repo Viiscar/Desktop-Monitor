@@ -44,7 +44,6 @@ const createWindow = () => {
   let batterryCycles;
   let batteryType;
   let batteryModel;
-  let batteryManufacturer
   let osDistro;
   let osRelease;
   let cpuLoad;
@@ -71,7 +70,7 @@ const createWindow = () => {
   .catch(error => console.error(error));
 
   si.battery()
-  .then(data => {onBattery=data.hasBattery; batterryCycles=data.cycleCount; batteryType=data.type; batteryModel=data.model;  batteryManufacturer=data.manufacturer})
+  .then(data => {onBattery=data.hasBattery; batterryCycles=data.cycleCount; batteryType=data.type; batteryModel=data.model})
   .catch(error => console.error(error));
   
   si.osInfo()
@@ -92,7 +91,7 @@ const createWindow = () => {
 
 
   mainWindow.webContents.on('did-finish-load', () => {
-
+    mainWindow.webContents.send('processes', processes);
     mainWindow.webContents.send('pcManufacturer', pcManufacturer);
     mainWindow.webContents.send('pcModel', pcModel);
     mainWindow.webContents.send('cpuBrand', cpuManufacturer + " "+ cpuBrand);
@@ -100,7 +99,6 @@ const createWindow = () => {
     mainWindow.webContents.send('cpuCores', cpuCores);
     mainWindow.webContents.send('cpuThreads', cpuThreads);
     mainWindow.webContents.send('avgCpuSpeed', avgCpuSpeed);
-    mainWindow.webContents.send('processes', processes);
     mainWindow.webContents.send('avgTemp', avgTemp);
     mainWindow.webContents.send('coresTemp', coresTemp);
     mainWindow.webContents.send('maxTemp', maxTemp);
@@ -110,7 +108,6 @@ const createWindow = () => {
     mainWindow.webContents.send('batterryCycles', batterryCycles);
     mainWindow.webContents.send('batteryType', batteryType);
     mainWindow.webContents.send('batteryModel', batteryModel);
-    mainWindow.webContents.send('batteryManufacturer', batteryManufacturer);
     mainWindow.webContents.send('osDistro', osDistro);
     mainWindow.webContents.send('osRelease', osRelease);
     mainWindow.webContents.send('cpuLoad', cpuLoad);

@@ -21,7 +21,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   // setInterval(() => {
    
@@ -33,6 +33,7 @@ const createWindow = () => {
   let cpuBrand;
   let cpuSpeed;
   let cpuCores;
+  let cpuThreads;
   let avgCpuSpeed;
   let avgTemp;
   let coresTemp;
@@ -54,7 +55,7 @@ const createWindow = () => {
   .catch(error => console.error(error));
 
   si.cpu()
-  .then(data => {cpuBrand=data.brand; cpuManufacturer=data.manufacturer; cpuSpeed=data.speed; cpuCores=data.physicalCores})
+  .then(data => {cpuBrand=data.brand; cpuManufacturer=data.manufacturer; cpuSpeed=data.speed; cpuCores=data.physicalCores; cpuThreads=data.cores})
   .catch(error => console.error(error));
 
   si.cpuCurrentSpeed()
@@ -85,14 +86,21 @@ const createWindow = () => {
   .then(data => processes=data.all)
   .catch(error => console.error(error));
 
+  si.processes()
+  .then(data => test=data.all)
+  .catch(error => console.error(error));
+
+
   mainWindow.webContents.on('did-finish-load', () => {
+
     mainWindow.webContents.send('pcManufacturer', pcManufacturer);
     mainWindow.webContents.send('pcModel', pcModel);
-    mainWindow.webContents.send('cpuBrand', cpuBrand);
-    mainWindow.webContents.send('cpuManufacturer', cpuManufacturer);
+    mainWindow.webContents.send('cpuBrand', cpuManufacturer + " "+ cpuBrand);
     mainWindow.webContents.send('cpuSpeed', cpuSpeed);
     mainWindow.webContents.send('cpuCores', cpuCores);
+    mainWindow.webContents.send('cpuThreads', cpuThreads);
     mainWindow.webContents.send('avgCpuSpeed', avgCpuSpeed);
+    mainWindow.webContents.send('processes', processes);
     mainWindow.webContents.send('avgTemp', avgTemp);
     mainWindow.webContents.send('coresTemp', coresTemp);
     mainWindow.webContents.send('maxTemp', maxTemp);
@@ -106,7 +114,6 @@ const createWindow = () => {
     mainWindow.webContents.send('osDistro', osDistro);
     mainWindow.webContents.send('osRelease', osRelease);
     mainWindow.webContents.send('cpuLoad', cpuLoad);
-    mainWindow.webContents.send('processes', processes);
   })
 };
 

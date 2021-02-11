@@ -27,6 +27,9 @@ const createWindow = () => {
    
   // },3000);
 
+  // echanger max temperature par cores temperatures
+  // speed par max speed
+
   let pcManufacturer;
   let pcModel;
   let cpuManufacturer;
@@ -57,16 +60,8 @@ const createWindow = () => {
   .then(data => {cpuBrand=data.brand; cpuManufacturer=data.manufacturer; cpuSpeed=data.speed; cpuCores=data.physicalCores; cpuThreads=data.cores})
   .catch(error => console.error(error));
 
-  si.cpuCurrentSpeed()
-  .then(data => avgCpuSpeed=data.avg)
-  .catch(error => console.error(error));
-
-  si.cpuTemperature()
-  .then(data => {avgTemp=data.main; coresTemp=data.cores; maxTemp=data.max})
-  .catch(error => console.error(error));
-
   si.mem()
-  .then(data => {totalRam=data.total*9.31*0.0000000001; usedRam=data.active*9.31*0.0000000001})
+  .then(data => totalRam=data.total*9.31*0.0000000001)
   .catch(error => console.error(error));
 
   si.battery()
@@ -77,33 +72,47 @@ const createWindow = () => {
   .then(data => {osDistro=data.distro; osRelease=data.release})
   .catch(error => console.error(error));
 
-  si.currentLoad()
-  .then(data => cpuLoad=data.currentLoad)
-  .catch(error => console.error(error));
+    setInterval(() => {
+      si.currentLoad()
+      .then(data => cpuLoad=data.currentLoad)
+      .catch(error => console.error(error));
 
-  si.processes()
-  .then(data => processes=data.all)
-  .catch(error => console.error(error));
+      si.processes()
+      .then(data => processes=data.all)
+      .catch(error => console.error(error));
 
-  si.processes()
-  .then(data => test=data.all)
-  .catch(error => console.error(error));
+      si.cpuTemperature()
+      .then(data => {avgTemp=data.main; coresTemp=data.cores; maxTemp=data.max})
+      .catch(error => console.error(error));
 
+      si.cpuCurrentSpeed()
+      .then(data => avgCpuSpeed=data.avg)
+      .catch(error => console.error(error));
 
+      si.mem()
+      .then(data => usedRam=data.active*9.31*0.0000000001)
+      .catch(error => console.error(error));
+    
+    },1000);
+  
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('processes', processes);
+    setInterval(() => {
+      mainWindow.webContents.send('processes', processes);
+      mainWindow.webContents.send('cpuLoad', cpuLoad);
+      mainWindow.webContents.send('avgTemp', avgTemp);
+      mainWindow.webContents.send('coresTemp', coresTemp);
+      mainWindow.webContents.send('maxTemp', maxTemp);
+      mainWindow.webContents.send('avgCpuSpeed', avgCpuSpeed);
+      mainWindow.webContents.send('usedRam', usedRam);
+    },1000);
+
     mainWindow.webContents.send('pcManufacturer', pcManufacturer);
     mainWindow.webContents.send('pcModel', pcModel);
     mainWindow.webContents.send('cpuBrand', cpuManufacturer + " "+ cpuBrand);
     mainWindow.webContents.send('cpuSpeed', cpuSpeed);
     mainWindow.webContents.send('cpuCores', cpuCores);
     mainWindow.webContents.send('cpuThreads', cpuThreads);
-    mainWindow.webContents.send('avgCpuSpeed', avgCpuSpeed);
-    mainWindow.webContents.send('avgTemp', avgTemp);
-    mainWindow.webContents.send('coresTemp', coresTemp);
-    mainWindow.webContents.send('maxTemp', maxTemp);
     mainWindow.webContents.send('totalRam', totalRam);
-    mainWindow.webContents.send('usedRam', usedRam);
     mainWindow.webContents.send('onBattery', onBattery);
     mainWindow.webContents.send('batterryCycles', batterryCycles);
     mainWindow.webContents.send('batteryType', batteryType);

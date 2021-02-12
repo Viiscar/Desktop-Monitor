@@ -10,8 +10,9 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1080,
+    minWidth: 680,
+    height: 840,
     webPreferences: {
       nodeIntegration: true
     }
@@ -20,27 +21,20 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
+  mainWindow.removeMenu();
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
-
-  // setInterval(() => {
-   
-  // },3000);
-
-  // echanger max temperature par cores temperatures
-  // speed par max speed
 
   let pcManufacturer;
   let pcModel;
   let cpuManufacturer;
   let cpuBrand;
-  let cpuSpeed;
+  let cpuSpeedMax;
   let cpuCores;
   let cpuThreads;
   let avgCpuSpeed;
   let avgTemp;
   let coresTemp;
-  let maxTemp;
   let totalRam;
   let usedRam;
   let onBattery
@@ -57,7 +51,7 @@ const createWindow = () => {
   .catch(error => console.error(error));
 
   si.cpu()
-  .then(data => {cpuBrand=data.brand; cpuManufacturer=data.manufacturer; cpuSpeed=data.speed; cpuCores=data.physicalCores; cpuThreads=data.cores})
+  .then(data => {cpuBrand=data.brand; cpuManufacturer=data.manufacturer; cpuSpeedMax=data.speedMax; cpuCores=data.physicalCores; cpuThreads=data.cores})
   .catch(error => console.error(error));
 
   si.mem()
@@ -82,7 +76,7 @@ const createWindow = () => {
       .catch(error => console.error(error));
 
       si.cpuTemperature()
-      .then(data => {avgTemp=data.main; coresTemp=data.cores; maxTemp=data.max})
+      .then(data => {avgTemp=data.main; coresTemp=data.cores})
       .catch(error => console.error(error));
 
       si.cpuCurrentSpeed()
@@ -101,7 +95,6 @@ const createWindow = () => {
       mainWindow.webContents.send('cpuLoad', cpuLoad);
       mainWindow.webContents.send('avgTemp', avgTemp);
       mainWindow.webContents.send('coresTemp', coresTemp);
-      mainWindow.webContents.send('maxTemp', maxTemp);
       mainWindow.webContents.send('avgCpuSpeed', avgCpuSpeed);
       mainWindow.webContents.send('usedRam', usedRam);
     },1000);
@@ -109,7 +102,7 @@ const createWindow = () => {
     mainWindow.webContents.send('pcManufacturer', pcManufacturer);
     mainWindow.webContents.send('pcModel', pcModel);
     mainWindow.webContents.send('cpuBrand', cpuManufacturer + " "+ cpuBrand);
-    mainWindow.webContents.send('cpuSpeed', cpuSpeed);
+    mainWindow.webContents.send('cpuSpeedMax', cpuSpeedMax);
     mainWindow.webContents.send('cpuCores', cpuCores);
     mainWindow.webContents.send('cpuThreads', cpuThreads);
     mainWindow.webContents.send('totalRam', totalRam);

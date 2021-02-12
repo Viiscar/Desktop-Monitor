@@ -22,8 +22,8 @@ ipcRenderer.on('cpuCores',(event,data) => {
 ipcRenderer.on('cpuThreads',(event,data) => {
     document.getElementById('cpuThreads').innerHTML = data;
 });
-ipcRenderer.on('cpuSpeed',(event,data) => {
-    document.getElementById('cpuSpeed').innerHTML = data+ " GHz";
+ipcRenderer.on('cpuSpeedMax',(event,data) => {
+    document.getElementById('cpuSpeedMax').innerHTML = data+ " GHz";
 });
 ipcRenderer.on('avgCpuSpeed',(event,data) => {
     document.getElementById('currentCpuSpeed').innerHTML = data+ " GHz";
@@ -35,10 +35,16 @@ ipcRenderer.on('avgTemp',(event,data) => {
     document.getElementById('avTemp').innerHTML = data+ " °C";
 });
 ipcRenderer.on('coresTemp',(event,data) => {
-    console.log('coresTemp ' + data);
-});
-ipcRenderer.on('maxTemp',(event,data) => {
-    document.getElementById('maxTemp').innerHTML = data+ " °C";
+
+    let cpu0 = "Core 1: " + data[0]+ " °C";
+    let cpu1 = "Core 2: " +data[1]+ " °C";
+    let cpu2 = "Core 3: " +data[2]+ " °C";
+    let cpu3 = "Core 4: " +data[3]+ " °C";
+
+    document.getElementById('coreTemp1').innerHTML = cpu0;
+    document.getElementById('coreTemp2').innerHTML = cpu1;
+    document.getElementById('coreTemp3').innerHTML = cpu2;
+    document.getElementById('coreTemp4').innerHTML = cpu3;
 });
 ipcRenderer.on('processes',(event,data) => {
     document.getElementById('processes').innerHTML = data;

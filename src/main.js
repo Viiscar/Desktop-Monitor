@@ -45,7 +45,7 @@ const createWindow = () => {
   let osRelease;
   let cpuLoad;
   let processes;
-
+ 
   si.system()
   .then(data => {pcModel=data.model; pcManufacturer=data.manufacturer})
   .catch(error => console.error(error));
@@ -98,6 +98,20 @@ const createWindow = () => {
       mainWindow.webContents.send('avgCpuSpeed', avgCpuSpeed);
       mainWindow.webContents.send('usedRam', usedRam);
     },1000);
+
+    // if windows
+    if(process.platform === "win32"){
+      setTimeout(() =>{
+        mainWindow.webContents.send('pcManufacturer', pcManufacturer);
+        mainWindow.webContents.send('pcModel', pcModel);
+        mainWindow.webContents.send('cpuBrand', cpuManufacturer + " "+ cpuBrand);
+        mainWindow.webContents.send('cpuSpeedMax', cpuSpeedMax);
+        mainWindow.webContents.send('cpuCores', cpuCores);
+        mainWindow.webContents.send('cpuThreads', cpuThreads);
+        mainWindow.webContents.send('osDistro', osDistro);
+        mainWindow.webContents.send('osRelease', osRelease);
+      },1500);
+    }
 
     mainWindow.webContents.send('pcManufacturer', pcManufacturer);
     mainWindow.webContents.send('pcModel', pcModel);

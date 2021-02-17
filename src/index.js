@@ -32,7 +32,8 @@ ipcRenderer.on('cpuLoad',(event,data) => {
     document.getElementById('cpuLoad').innerHTML = data.toFixed(2) + " %";
 });
 ipcRenderer.on('avgTemp',(event,data) => {
-    document.getElementById('avTemp').innerHTML = data+ " °C";
+    let farenheit = data*1.8+32;
+    document.getElementById('avTemp').innerHTML = data+ " °C | "+ farenheit.toFixed()+ " °F ";
 });
 ipcRenderer.on('coresTemp',(event,data) => {
 

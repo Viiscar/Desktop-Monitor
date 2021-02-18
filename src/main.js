@@ -38,6 +38,9 @@ const createWindow = () => {
   let coresTemp;
   let totalRam;
   let usedRam;
+  let storage;
+  let storageType;
+  let storageSize;
   let onBattery
   let batterryCycles;
   let batteryType;
@@ -57,6 +60,10 @@ const createWindow = () => {
 
   si.mem()
   .then(data => totalRam=data.total*9.31*0.0000000001)
+  .catch(error => console.error(error));
+
+  si.diskLayout()
+  .then(data => {storage=data[0].name; storageType=data[0].type; storageSize=data[0].size*9.31*0.0000000001})
   .catch(error => console.error(error));
 
   si.battery()
@@ -121,6 +128,9 @@ const createWindow = () => {
     mainWindow.webContents.send('cpuCores', cpuCores);
     mainWindow.webContents.send('cpuThreads', cpuThreads);
     mainWindow.webContents.send('totalRam', totalRam);
+    mainWindow.webContents.send('storage', storage);
+    mainWindow.webContents.send('storageType', storageType);
+    mainWindow.webContents.send('storageSize', storageSize);
     mainWindow.webContents.send('onBattery', onBattery);
     mainWindow.webContents.send('batterryCycles', batterryCycles);
     mainWindow.webContents.send('batteryType', batteryType);
@@ -136,15 +146,6 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the

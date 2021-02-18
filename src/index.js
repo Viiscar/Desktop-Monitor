@@ -56,6 +56,15 @@ ipcRenderer.on('totalRam',(event,data) => {
 ipcRenderer.on('usedRam',(event,data) => {
     document.getElementById('usedRam').innerHTML = data.toFixed(2)+ " GB";
 });
+ipcRenderer.on('storage',(event,data) => {
+    document.getElementById('storage').innerHTML = data;
+});
+ipcRenderer.on('storageType',(event,data) => {
+    document.getElementById('storageType').innerHTML = data;
+});
+ipcRenderer.on('storageSize',(event,data) => {
+    document.getElementById('storageSize').innerHTML = data.toFixed() + " GB";
+});
 ipcRenderer.on('onBattery',(event,data) => {
     if(data){
         ipcRenderer.on('batterryCycles',(event,data) => {

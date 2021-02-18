@@ -119,6 +119,20 @@ const createWindow = () => {
         mainWindow.webContents.send('osDistro', osDistro);
         mainWindow.webContents.send('osRelease', osRelease);
       },1500);
+      setTimeout(() =>{
+        mainWindow.webContents.send('storage', storage);
+        mainWindow.webContents.send('storageType', storageType);
+        mainWindow.webContents.send('storageSize', storageSize);
+      },2500);
+    }
+
+    // if macos
+    if(process.platform === "darwin"){
+      setTimeout(() =>{
+        mainWindow.webContents.send('storage', storage);
+        mainWindow.webContents.send('storageType', storageType);
+        mainWindow.webContents.send('storageSize', storageSize);
+      },1000);
     }
 
     mainWindow.webContents.send('pcManufacturer', pcManufacturer);
